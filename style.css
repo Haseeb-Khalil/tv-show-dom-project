@@ -1,3 +1,64 @@
+body {
+  background-color: rgb(7, 7, 7);
+  color: whitesmoke;
+}
+
+div.mainHeading {
+  width: 25rem;
+  text-align: center;
+  text-shadow: 3px 5px 5px black;
+  color: whitesmoke;
+  background-color: cadetblue;
+  padding: 0.5px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+}
+
 #root {
-  color: red;
+  margin: 5px;
+  text-align: center;
+  font-size: 1.7rem;
+}
+
+.show-card {
+  font-size: 1.1rem;
+  padding: 0.2rem;
+  margin: 5px;
+  border: 1px dashed red;
+  background-color: rgb(19, 18, 18);
+  width: 250px;
+  border-radius: 5px;
+}
+.All-cards {
+  background-color: rgb(54, 54, 54);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 1px solid whitesmoke;
+  border-radius: 7px;
+}
+h3 {
+  border: 2px solid whitesmoke;
+  border-radius: 5px;
+  padding: 0.2rem;
+}
+.show-description {
+  word-spacing: 0.2rem;
+}
+
+/* maze tv link styles*/
+/*Footer*/
+footer {
+  margin: 5px;
+  text-align: center;
+}
+a {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+a:hover {
+  color: black;
+  font-weight: bold;
+  background-color: palegreen;
 }
