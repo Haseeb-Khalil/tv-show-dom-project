@@ -9,7 +9,37 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <!--Page heading H1-->
+    <h1 id="mainHeading">TV Show Project</h1>
+    <div class="header">
+      <!--Selection Dropdown-->
+      <!--
+      <select class="selection">
+        <option></option>
+      </select>
+    -->
+
+      <!--Search Bar-->
+      <input type="text" name="searchBar" id="searchBar" placeholder="search" />
+      <!--Displayed episodes-->
+      <p id="totalDisplayed">Total number of Shows: 73</p>
+    </div>
+
+    <div id="root">
+      <!--      <div class="All-cards">
+        <div class="show-card"></div>
+      </div> 
+      -->
+    </div>
+
+    <!--Footer-->
+    <hr />
+    <footer class="maze-tv-footer">
+      <p>
+        Source:
+        <a href="https://www.tvmaze.com"><em> TVMaze.com </em></a>
+      </p>
+    </footer>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>

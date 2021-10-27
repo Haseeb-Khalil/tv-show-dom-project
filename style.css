@@ -1,25 +1,39 @@
 body {
-  background-color: rgb(7, 7, 7);
+  background-color: black;
   color: whitesmoke;
 }
 
-div.mainHeading {
-  width: 25rem;
-  text-align: center;
-  text-shadow: 3px 5px 5px black;
+h1 {
+  text-shadow: 3px 3px 5px black;
   color: whitesmoke;
   background-color: cadetblue;
-  padding: 0.5px;
+  border-radius: 5px;
+  width: 25%;
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 5px;
 }
+#searchBar {
+  width: 25%;
+  border-radius: 5px;
+  height: 30px;
+}
+/* #mainHeading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+} */
 
-#root {
+/* #searchWrapper {
+  display: flex;
+  align-content: flex-start;
+} */
+
+/* #root {
   margin: 5px;
   text-align: center;
   font-size: 1.7rem;
-}
+} */
 
 .show-card {
   font-size: 1.1rem;
@@ -61,4 +75,8 @@ a:hover {
   color: black;
   font-weight: bold;
   background-color: palegreen;
+}
+hr {
+  width: 80%;
+  margin-top: 30px;
 }
