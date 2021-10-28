@@ -8,32 +8,30 @@ h1 {
   color: whitesmoke;
   background-color: cadetblue;
   border-radius: 5px;
-  width: 25%;
+  width: 350px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 30px;
 }
 #searchBar {
   width: 25%;
   border-radius: 5px;
-  height: 30px;
+  height: 35px;
 }
-/* #mainHeading {
+
+.header {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-} */
-
-/* #searchWrapper {
-  display: flex;
-  align-content: flex-start;
-} */
-
-/* #root {
-  margin: 5px;
-  text-align: center;
-  font-size: 1.7rem;
-} */
+  margin: 20px;
+}
+#selection {
+  padding: 7px;
+  font-size: medium;
+  height: 40px;
+  border-radius: 5px;
+}
 
 .show-card {
   font-size: 1.1rem;
