@@ -28,6 +28,24 @@ let allCardsDiv = document.createElement("div");
 
 bodyEl.appendChild(searchBarWrapper);
 
+// Fetching API's
+
+// const ApiEndpoint = "https://api.tvmaze.com/shows/82/episodes";
+
+// let liveData = fetch(ApiEndpoint)
+//   .then(function (response) {
+//     if (response.ok) {
+//       return response.json();
+//     }
+//     throw `${response.status} ${response.statusText}`;
+//   })
+//   .then(function (data) {
+
+//   })
+//   .catch(function (error) {
+//     console.log("An error occurred:", error);
+//   });
+
 ///////====SetUp of whole page which includes all the functions=====////////
 
 function setup() {
@@ -48,9 +66,9 @@ function createCardsWrapper() {
 }
 ////====Showing All episodes with this function====/////
 
-function displayEpisodesCards(episodeList) {
+function displayEpisodesCards(allEpisodes) {
   allCardsDiv.innerHTML = "";
-  episodeList.forEach((episode) => {
+  allEpisodes.forEach((episode) => {
     // Creating single Card div
     let card = document.createElement("div");
     card.setAttribute("class", "show-card");
@@ -122,16 +140,22 @@ function createDropDown() {
 dropDown.addEventListener("change", (e) => {
   let selectedOpt = dropDown.value;
   let displaySelectedEpisode = allEpisodes.filter((episode) => {
-    return episode.name.includes(selectedOpt);
+    if (selectedOpt === "default") {
+      return true;
+    } else {
+      return episode.name.includes(selectedOpt);
+    }
   });
-  if (dropDown.value === "default") {
-    displayEpisodesCards(allEpisodes);
-  } else {
-    displayEpisodesCards(displaySelectedEpisode);
-  }
-  if (dropDown.value !== "default") {
-    numbers.innerHTML = `Showing 1 of 73 Shows.`;
-  }
+  // if (dropDown.value === "default") {
+  // displayEpisodesCards(allEpisodes);
+  // } else {
+  displayEpisodesCards(displaySelectedEpisode);
+  // }
+  // if (dropDown.value !== "default") {
+  numbers.innerHTML = `Showing ${displaySelectedEpisode.length} out of ${allEpisodes.length} Shows.`;
+  //  } else {
+  //   numbers.innerHTML = `Showing ${allEpisodes.length} of ${allEpisodes.length} Shows.`;
+  // }
 });
 
 // Search Bar event Listener
