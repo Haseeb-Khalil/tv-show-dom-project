@@ -2,7 +2,7 @@
 
 // Lets select the body tag
 let bodyEl = document.querySelector("body");
-let allEpisodes = getAllEpisodes();
+//let allEpisodes = getAllEpisodes();
 
 let searchBarWrapper = document.createElement("div");
 searchBarWrapper.setAttribute("class", "header");
@@ -28,84 +28,93 @@ let allCardsDiv = document.createElement("div");
 
 bodyEl.appendChild(searchBarWrapper);
 
-// Fetching API's
+// Fetching API's and Making Live data
 
-// const ApiEndpoint = "https://api.tvmaze.com/shows/82/episodes";
+const TvShowApi = "https://api.tvmaze.com/shows/82/episodes";
 
-// let liveData = fetch(ApiEndpoint)
-//   .then(function (response) {
-//     if (response.ok) {
-//       return response.json();
-//     }
-//     throw `${response.status} ${response.statusText}`;
-//   })
-//   .then(function (data) {
-
-//   })
-//   .catch(function (error) {
-//     console.log("An error occurred:", error);
-//   });
+let allEpisodes;
 
 ///////====SetUp of whole page which includes all the functions=====////////
 
 function setup() {
+  fetch(TvShowApi)
+    .then(function (response) {
+      if (response.ok) {
+        return response.json();
+      }
+      throw `${response.status} ${response.statusText}`;
+    })
+    .then(function (data) {
+      //console.log(data);
+      allEpisodes = data;
+      //setup();
+      displayEpisodesCards(allEpisodes);
+      numberOfDisplayedEpisodes(allEpisodes);
+      createCardsWrapper();
+      createSearchHeader();
+      displayFooter();
+    })
+    .catch(function (error) {
+      console.log("An error occurred:", error);
+    });
   //allEpisodes = getAllEpisodes();
-  displayEpisodesCards(allEpisodes);
-  numberOfDisplayedEpisodes(allEpisodes);
-  createCardsWrapper();
-  createDropDown();
-  displayFooter();
 }
 
 window.onload = setup;
 
-/////////////=======/////////////
+// Div which contains all the cards
 function createCardsWrapper() {
   bodyEl.appendChild(allCardsDiv);
   allCardsDiv.setAttribute("class", "All-cards");
 }
-////====Showing All episodes with this function====/////
 
+//Showing All episodes with this function
 function displayEpisodesCards(allEpisodes) {
   allCardsDiv.innerHTML = "";
+  console.log(allEpisodes);
   allEpisodes.forEach((episode) => {
-    // Creating single Card div
-    let card = document.createElement("div");
-    card.setAttribute("class", "show-card");
-    allCardsDiv.appendChild(card);
-
-    // Lets create and image tag for our card
-    let image = document.createElement("img");
-    image.setAttribute("class", "card-image");
-    image.src = episode.image.medium;
-    card.appendChild(image);
-
-    // Lets create a heading which displays Tv show's: name, season number & episode number
-    let episodeNum = episode.number;
-    let seasonNum = episode.season;
-
-    if (episodeNum < 10) {
-      episodeNum = `0${episode.number}`;
-    }
-    if (seasonNum < 10) {
-      seasonNum = `0${episode.season}`;
-    }
-    let formatted = `${episode.name} - S${seasonNum}E${episodeNum}`;
-    let h3El = document.createElement("h3");
-    h3El.setAttribute("class", "show-name-number");
-    h3El.innerHTML = `${formatted}`;
-    card.appendChild(h3El);
-
-    // Lets Create a paragraph which displays our show's details
-    let summaryParagraph = document.createElement("p");
-    summaryParagraph.setAttribute("class", "show-description");
-    summaryParagraph.innerHTML = episode.summary;
-    card.appendChild(summaryParagraph);
+    allCardsDiv.appendChild(createCard(episode));
   });
 }
 
+// Function to create One card for each episode
+function createCard(episode) {
+  // Creating single Card div
+  let card = document.createElement("div");
+  card.setAttribute("class", "show-card");
+  //allCardsDiv.appendChild(card);
+
+  // Lets create and image tag for our card
+  let image = document.createElement("img");
+  image.setAttribute("class", "card-image");
+  image.src = episode.image.medium;
+  card.appendChild(image);
+
+  // Lets create a heading which displays Tv show's: name, season number & episode number
+  let episodeNum = episode.number;
+  let seasonNum = episode.season;
+
+  if (episodeNum < 10) {
+    episodeNum = `0${episode.number}`;
+  }
+  if (seasonNum < 10) {
+    seasonNum = `0${episode.season}`;
+  }
+  let formatted = `${episode.name} - S${seasonNum}E${episodeNum}`;
+  let h3El = document.createElement("h3");
+  h3El.setAttribute("class", "show-name-number");
+  h3El.innerHTML = `${formatted}`;
+  card.appendChild(h3El);
+
+  // Lets Create a paragraph which displays our show's details
+  let summaryParagraph = document.createElement("p");
+  summaryParagraph.setAttribute("class", "show-description");
+  summaryParagraph.innerHTML = episode.summary;
+  card.appendChild(summaryParagraph);
+  return card;
+}
 //// ===Drop down=== ///
-function createDropDown() {
+function createSearchHeader() {
   const dropDownArray = [...allEpisodes];
   dropDownArray.unshift({ name: "default" });
 
