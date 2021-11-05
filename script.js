@@ -4,33 +4,46 @@
 let bodyEl = document.querySelector("body");
 //let allEpisodes = getAllEpisodes();
 
+// Search Bar wrapper
 let searchBarWrapper = document.createElement("div");
 searchBarWrapper.setAttribute("class", "header");
 
+// All Shows Dropdown form
+let formEl = document.createElement("form");
+formEl.setAttribute("class", "Shows-form");
+searchBarWrapper.appendChild(formEl);
+// Shows dropDown
+let dropDownEl = document.createElement("select");
+dropDownEl.setAttribute("id", "showSelection");
+formEl.appendChild(dropDownEl);
+let showOpt = document.createElement("option");
+
+// Episode dropdown form
 let formElem = document.createElement("form");
 formElem.setAttribute("class", "dropDown-form");
 searchBarWrapper.appendChild(formElem);
-
+// Episode dropdown
 let dropDown = document.createElement("select");
 dropDown.setAttribute("id", "selection");
 formElem.appendChild(dropDown);
 
 let options = document.createElement("option");
-
+// Search Bar
 let searchBar = document.createElement("input");
 searchBar.setAttribute("id", "searchBar");
 searchBarWrapper.appendChild(searchBar);
-
+// disaplay the number of shows on the screen
 let numbers = document.createElement("h4");
 searchBarWrapper.appendChild(numbers);
-
+// All Cards wrapper
 let allCardsDiv = document.createElement("div");
 
 bodyEl.appendChild(searchBarWrapper);
 
 // Fetching API's and Making Live data
 
-const TvShowApi = "https://api.tvmaze.com/shows/82/episodes";
+const TvShowApi = "https://api.tvmaze.com/shows/81/episodes";
+//const showsApi = `https://api.tvmaze.com/shows/${showId}/episodes`;
 
 let allEpisodes;
 
@@ -128,7 +141,7 @@ function createSearchHeader() {
     if (seasonNum < 10) {
       seasonNum = `0${episode.season}`;
     }
-    let formatted = `${episode.name} - S${seasonNum}E${episodeNum}`;
+    let formatted = `S${seasonNum}E${episodeNum} - ${episode.name}`;
     let options = document.createElement("option");
     options.setAttribute("label", `${formatted}`);
     if (index === 0) {
@@ -145,7 +158,7 @@ function createSearchHeader() {
   searchBar.setAttribute("placeholder", "Search");
 }
 
-// Event Listener for dropDown
+// Event Listener for Episode dropDown
 dropDown.addEventListener("change", (e) => {
   let selectedOpt = dropDown.value;
   let displaySelectedEpisode = allEpisodes.filter((episode) => {

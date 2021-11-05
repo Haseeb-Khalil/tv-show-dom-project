@@ -42,6 +42,11 @@ h1 {
   width: 250px;
   border-radius: 5px;
 }
+.show-card:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+  transition: all 1s ease;
+}
 .All-cards {
   background-color: rgb(54, 54, 54);
   display: flex;
