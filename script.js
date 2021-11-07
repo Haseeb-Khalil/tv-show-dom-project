@@ -1,342 +1,212 @@
-// //You can edit ALL of the code here
+// Getting our structural elements from HTML
+const bodyEl = document.getElementById("bodyEl");
+const showDropDown = document.getElementById("showSelection");
+const episodeDropDown = document.getElementById("episodeSelection");
+const searchBar = document.getElementById("search");
 
-// Lets select the body tag
-let bodyEl = document.querySelector("body");
-//let allEpisodes = getAllEpisodes();
-
-// Search Bar wrapper
-let searchBarWrapper = document.createElement("div");
-searchBarWrapper.setAttribute("class", "header");
-
-let options = document.createElement("option");
-// Search Bar
-let searchBar = document.createElement("input");
-searchBar.setAttribute("id", "searchBar");
-searchBarWrapper.appendChild(searchBar);
-// display the number of shows on the screen
-let numbers = document.createElement("h4");
-searchBarWrapper.appendChild(numbers);
-// All Cards wrapper
-let allCardsDiv = document.createElement("div");
-bodyEl.appendChild(searchBarWrapper);
-bodyEl.appendChild(allCardsDiv);
-
-// Fetching API's and Making Live data
-
-//const TvShowApi = "https://api.tvmaze.com/shows/81/episodes";
-
+// We create some global variables here whose values can be changed later in the code
+let allShows;
 let allEpisodes;
 
-///////====SetUp of whole page which includes all the functions=====////////
+// Page setup function
 
-function setup() {
-  // getLiveData();
-  //setup();
-  // displayEpisodesCards(allEpisodes);
-  // numberOfDisplayedEpisodes(allEpisodes);
-  // createCardsWrapper();
-  // createSearchHeader();
-
-  displayFooter();
-  //allEpisodes = getAllEpisodes();
+function pageSetUp() {
+  allShows = getAllShows();
+  // Lets Sort our shows
+  const sortedShows = allShows.sort((a, b) => {
+    return a.name < b.name ? -1 : 1;
+  });
+  createAllShowsOptions(sortedShows);
+  populateCards(sortedShows);
 }
 
-////making of search bar
-searchBar.setAttribute("label", "search-Show");
-searchBar.setAttribute("name", "searchBar");
-searchBar.setAttribute("type", "text");
-searchBar.setAttribute("placeholder", "Search");
+window.onload = pageSetUp;
 
-let allShows = getAllShows();
-// Shows dropDown
-let showDropDown = document.createElement("select");
-showDropDown.setAttribute("id", "showSelection");
-searchBarWrapper.appendChild(showDropDown);
-//console.log(allShows);
-allShows.forEach((show) => {
-  let showOpt = document.createElement("option");
-  showOpt.setAttribute("value", show.id);
-  showOpt.setAttribute("label", show.name);
-  showDropDown.appendChild(showOpt);
-  //let showId = 82;
-  //getLiveData(showId);
-});
+// Lets Get Live Data
+function getEpisodes(showId) {
+  let givenApi = `https://api.tvmaze.com/shows/${showId}/episodes`;
 
-showDropDown.addEventListener("change", getLiveData);
-//document.getElementById("showSelection").selectedIndex = "2";
-
-let episodeDropDown = document.createElement("select");
-episodeDropDown.setAttribute("id", "selection");
-searchBarWrapper.appendChild(episodeDropDown);
-// episodeDropDown.addEventListener("change", )
-
-function getLiveData() {
-  let selectedValue = showDropDown.options[showDropDown.selectedIndex].value;
-  console.log(selectedValue);
-  const showsApi = `https://api.tvmaze.com/shows/${selectedValue}/episodes`;
-  fetch(showsApi)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      }
-      throw `${response.status} ${response.statusText}`;
-    })
-    .then(function (data) {
-      //console.log(data);
-      var formatted;
-
-      data.forEach((episode) => {
-        // Episode dropdown
-
-        let episodeNum = episode.number;
-        let seasonNum = episode.season;
-
-        if (episodeNum < 10) {
-          episodeNum = `0${episode.number}`;
-        }
-        if (seasonNum < 10) {
-          seasonNum = `0${episode.season}`;
-        }
-        formatted = `S${seasonNum}E${episodeNum} - ${episode.name}`;
-        let options = document.createElement("option");
-        options.setAttribute("label", `${formatted}`);
-        // if (index === 0) {
-        //   options.setAttribute("selected", "selected");
-        //   options.setAttribute("label", `All Episodes`);
-        // }
-        options.setAttribute("value", episode.name);
-        options.setAttribute("text", episode.name);
-        console.log(options);
-        episodeDropDown.appendChild(options);
-      });
-
-      // Function to create One card for each episode
-
-      // Creating single Card div
-      data.forEach((episode) => {
-        let card = document.createElement("div");
-        card.setAttribute("class", "show-card");
-        //allCardsDiv.appendChild(card);
-
-        // Lets create and image tag for our card
-        let image = document.createElement("img");
-        image.setAttribute("class", "card-image");
-        //image.src = episode.image;
-        if (episode.image) {
-          image.src = episode.image.medium;
-        }
-        card.appendChild(image);
-        let h3El = document.createElement("h3");
-        h3El.setAttribute("class", "show-name-number");
-        h3El.innerHTML = `${formatted}`;
-        card.appendChild(h3El);
-
-        // Lets Create a paragraph which displays our show's details
-        let summaryParagraph = document.createElement("p");
-        summaryParagraph.setAttribute("class", "show-description");
-        summaryParagraph.innerHTML = episode.summary;
-        card.appendChild(summaryParagraph);
-        allCardsDiv.appendChild(card);
-      });
-    })
-    .catch(function (error) {
-      console.log("An error occurred:", error);
-    });
+  return fetch(givenApi).then(function (response) {
+    if (response.ok) {
+      return response.json();
+    }
+    throw `${response.status} ${response.statusText}`;
+  });
 }
-// Div which contains all the cards
 
-//Showing All episodes with this function
+function showCount(search) {
+  let countEl = document.getElementById("count");
+  let totalEpisode = allEpisodes.length;
+  let searchedEpisode = search.length;
+  countEl.innerText = `Showing ${searchedEpisode}/${totalEpisode} episodes`;
+  return countEl;
+}
 
-// allCardsDiv.innerHTML = "";
-// console.log(allEpisodes);
-// allEpisodes.forEach((episode) => {
-//   allCardsDiv.appendChild(createCard(episode));
-// });
+function removeShowCount() {
+  let countEl = document.getElementById("count");
+  countEl.innerHTML = "";
+  return countEl;
+}
+// Writing the name and number in correct syntax
+function displayNameNumber(episode) {
+  let formattedName;
+  let episodeNum = episode.number;
+  let seasonNum = episode.season;
 
-//// ===Drop down=== ///
-
-// Event Listener for Episode dropDown
-// dropDown.addEventListener("change", (e) => {
-//   let selectedOpt = dropDown.value;
-//   let displaySelectedEpisode = allEpisodes.filter((episode) => {
-//     if (selectedOpt === "default") {
-//       return true;
-//     } else {
-//       return episode.name.includes(selectedOpt);
-//     }
-//   });
-// if (dropDown.value === "default") {
-// displayEpisodesCards(allEpisodes);
-// } else {
-//displayEpisodesCards(displaySelectedEpisode);
-// }
-// if (dropDown.value !== "default") {
-//numbers.innerHTML = `Showing ${displaySelectedEpisode.length} out of ${allEpisodes.length} Shows.`;
-//  } else {
-//   numbers.innerHTML = `Showing ${allEpisodes.length} of ${allEpisodes.length} Shows.`;
-// }
+  if (episodeNum < 10) {
+    episodeNum = `0${episode.number}`;
+  }
+  if (seasonNum < 10) {
+    seasonNum = `0${episode.season}`;
+  }
+  if (episodeNum || seasonNum) {
+    formattedName = `S${seasonNum}E${episodeNum} - ${episode.name}`;
+  } else {
+    formattedName = episode.name;
+  }
+  return formattedName;
+}
 
 // Search Bar event Listener
-// searchBar.addEventListener("input", (e) => {
-//   let searchString = e.target.value.toLowerCase();
-//   let filteredEpisodes = allEpisodes.filter((episode) => {
-//     return (
-//       episode.name.toLowerCase().includes(searchString) ||
-//       episode.summary.toLowerCase().includes(searchString)
-//     );
-//   }));
-// Calling our function "makePageForEpisodes" which shows the episodes
-// and giving it parameter of our "filteredEpisodes" So it only shows
-//   displayEpisodesCards(filteredEpisodes);
+searchBar.addEventListener("input", (e) => {
+  //Getting value of searchInput
+  let searchString = e.target.value.toLowerCase();
+  let searchResult = search(searchString, allShows); // our search result will be input text checked in all episodes
+  populateCards(searchResult);
+  showCount(searchResult);
+});
 
-//   numberOfDisplayedEpisodes(filteredEpisodes);
-// });
+// function to check if searchInput matches episodes
+// It takes two parameters inputText and Episodes we need to perform search on(in this case all episodes)
+function search(searchText, allEpisodes) {
+  let filteredEpisodes = allEpisodes.filter((episode) => {
+    return (
+      episode.name.toLowerCase().includes(searchText) ||
+      episode.summary.toLowerCase().includes(searchText)
+    );
+  });
+  return filteredEpisodes;
+}
 
-//// Function showing the number episodes being displayed on screen
-// function numberOfDisplayedEpisodes(search) {
-//   //const displayCount = document.getElementById("totalDisplayed");
-//   let totalEpisodesLength = allEpisodes.length;
-//   let searchLength = search.length;
-//   numbers.innerHTML = `Showing ${searchLength} out of ${totalEpisodesLength} episode(s).`;
-// }
+// Create a single Option for a show/
+function createOneShowOption(show) {
+  let option = document.createElement("option");
+  option.setAttribute("value", show.id);
+  option.innerHTML = show.name;
+  return option;
+}
 
-window.onload = setup;
+// Create options for all shows/
+// First we appended an option to show dropdown and we've set its a special Id and Name.
+// Then we created option for each show as per above function "createOneShowOption(show)"
+function createAllShowsOptions(allShows) {
+  showDropDown.appendChild(
+    createOneShowOption({ name: "All-Shows", id: "All-Shows" })
+  );
+  allShows.forEach((show) => {
+    let showOption = createOneShowOption(show);
+    showDropDown.appendChild(showOption);
+  });
+}
 
-// Div which contains all the cards
-// function createCardsWrapper() {
-//   bodyEl.appendChild(allCardsDiv);
-//   allCardsDiv.setAttribute("class", "All-cards");
-// }
+// Show DropDown Event Listener
+showDropDown.addEventListener("change", (e) => {
+  let showId = e.target.value;
+  if (showId === "All-Shows") {
+    // Should display All shows
+    populateCards(allShows);
+    removeShowCount();
+    createAllEpisodesOptions([]);
+    // episodeDropDown.innerHTML = `<option value="selected">
+    //       <selected>Select a show to see episodes</selected>
+    //     </option>`;
+    searchBar.value = "";
+  } else {
+    // otherwise display shows using showId and live Data
+    getEpisodes(showId).then((data) => {
+      allEpisodes = data;
 
-// //Showing All episodes with this function
-// function displayEpisodesCards(allEpisodes) {
-//   allCardsDiv.innerHTML = "";
-//   console.log(allEpisodes);
-//   allEpisodes.forEach((episode) => {
-//     allCardsDiv.appendChild(createCard(episode));
-//   });
-// }
+      populateCards(allEpisodes);
+      showCount(allEpisodes);
+      createAllEpisodesOptions(allEpisodes);
+    });
+  }
+});
 
-// // Function to create One card for each episode
-// function createCard(episode) {
-//   // Creating single Card div
-//   let card = document.createElement("div");
-//   card.setAttribute("class", "show-card");
-//   //allCardsDiv.appendChild(card);
+// Create One Option for Episode
+function createOneEpisodeOption(episode) {
+  let option = document.createElement("option");
+  option.setAttribute("value", episode.id);
+  let title = displayNameNumber(episode);
+  option.innerHTML = title;
+  return option;
+}
+// Create Options for all episodes
+function createAllEpisodesOptions(allEpisodes) {
+  episodeDropDown.innerHTML = "";
 
-//   // Lets create and image tag for our card
-//   let image = document.createElement("img");
-//   image.setAttribute("class", "card-image");
-//   image.src = episode.image.medium;
-//   card.appendChild(image);
+  allEpisodes.forEach((episode) => {
+    let episodeOption = createOneEpisodeOption(episode);
+    episodeDropDown.appendChild(episodeOption);
+  });
+}
 
-//   // Lets create a heading which displays Tv show's: name, season number & episode number
-//   let episodeNum = episode.number;
-//   let seasonNum = episode.season;
+// Episode DropDown Event Listener
+episodeDropDown.addEventListener("change", (e) => {
+  let value = e.target.value;
+  location.href = `#${value}`;
 
-//   if (episodeNum < 10) {
-//     episodeNum = `0${episode.number}`;
-//   }
-//   if (seasonNum < 10) {
-//     seasonNum = `0${episode.season}`;
-//   }
-//   let formatted = `${episode.name} - S${seasonNum}E${episodeNum}`;
-//   let h3El = document.createElement("h3");
-//   h3El.setAttribute("class", "show-name-number");
-//   h3El.innerHTML = `${formatted}`;
-//   card.appendChild(h3El);
+  let selectedEpisode = document.getElementById(value);
+  selectedEpisode.setAttribute("class", "selectedCard");
+  setTimeout(() => {
+    selectedEpisode.removeAttribute("class", "selectedCard");
+  }, 3000);
+});
 
-//   // Lets Create a paragraph which displays our show's details
-//   let summaryParagraph = document.createElement("p");
-//   summaryParagraph.setAttribute("class", "show-description");
-//   summaryParagraph.innerHTML = episode.summary;
-//   card.appendChild(summaryParagraph);
-//   return card;
-// }
-// //// ===Drop down=== ///
-// function createSearchHeader() {
-//   const dropDownArray = [...allEpisodes];
-//   dropDownArray.unshift({ name: "default" });
+// Lets create One Card for a show/episode
+function createCard(element) {
+  let card = document.createElement("li");
+  let cardTitle = document.createElement("h4");
+  let cardImage = document.createElement("img");
+  let cardDescription = document.createElement("p");
+  let link = document.createElement("a");
 
-//   dropDownArray.forEach((episode, index) => {
-//     let episodeNum = episode.number;
-//     let seasonNum = episode.season;
+  card.setAttribute("id", element.id);
+  card.setAttribute("class", "single-card");
 
-//     if (episodeNum < 10) {
-//       episodeNum = `0${episode.number}`;
-//     }
-//     if (seasonNum < 10) {
-//       seasonNum = `0${episode.season}`;
-//     }
-//     let formatted = `S${seasonNum}E${episodeNum} - ${episode.name}`;
-//     let options = document.createElement("option");
-//     options.setAttribute("label", `${formatted}`);
-//     if (index === 0) {
-//       options.setAttribute("selected", "selected");
-//       options.setAttribute("label", `All Episodes`);
-//     }
-//     options.setAttribute("value", episode.name);
-//     dropDown.appendChild(options);
-//   });
-//   ////making of search bar
-//   searchBar.setAttribute("label", "search-Show");
-//   searchBar.setAttribute("name", "searchBar");
-//   searchBar.setAttribute("type", "text");
-//   searchBar.setAttribute("placeholder", "Search");
-// }
+  cardTitle.setAttribute("class", "card-title");
+  let title = displayNameNumber(element); // using our callback function
+  cardTitle.innerHTML = title;
 
-// // Event Listener for Episode dropDown
-// dropDown.addEventListener("change", (e) => {
-//   let selectedOpt = dropDown.value;
-//   let displaySelectedEpisode = allEpisodes.filter((episode) => {
-//     if (selectedOpt === "default") {
-//       return true;
-//     } else {
-//       return episode.name.includes(selectedOpt);
-//     }
-//   });
-//   // if (dropDown.value === "default") {
-//   // displayEpisodesCards(allEpisodes);
-//   // } else {
-//   displayEpisodesCards(displaySelectedEpisode);
-//   // }
-//   // if (dropDown.value !== "default") {
-//   numbers.innerHTML = `Showing ${displaySelectedEpisode.length} out of ${allEpisodes.length} Shows.`;
-//   //  } else {
-//   //   numbers.innerHTML = `Showing ${allEpisodes.length} of ${allEpisodes.length} Shows.`;
-//   // }
-// });
+  cardImage.setAttribute("class", "card-picture");
+  cardImage.src = element.image ? element.image.medium : ""; // it will only show the image if a card has a medium sized image present
 
-// // Search Bar event Listener
-// searchBar.addEventListener("input", (e) => {
-//   let searchString = e.target.value.toLowerCase();
-//   let filteredEpisodes = allEpisodes.filter((episode) => {
-//     return (
-//       episode.name.toLowerCase().includes(searchString) ||
-//       episode.summary.toLowerCase().includes(searchString)
-//     );
-//   });
-//   // Calling our function "makePageForEpisodes" which shows the episodes
-//   // and giving it parameter of our "filteredEpisodes" So it only shows
-//   displayEpisodesCards(filteredEpisodes);
+  cardDescription.setAttribute("class", "card-detail");
+  cardDescription.innerHTML = element.summary;
 
-//   numberOfDisplayedEpisodes(filteredEpisodes);
-// });
+  link.setAttribute("class", "pageLink");
+  link.href = element.url;
+  link.target = "_blank";
+  link.innerHTML = "Click here to watch";
 
-// //// Function showing the number episodes being displayed on screen
-// function numberOfDisplayedEpisodes(search) {
-//   //const displayCount = document.getElementById("totalDisplayed");
-//   let totalEpisodesLength = allEpisodes.length;
-//   let searchLength = search.length;
-//   numbers.innerHTML = `Showing ${searchLength} out of ${totalEpisodesLength} episode(s).`;
-// }
+  card.appendChild(cardTitle);
+  card.appendChild(cardImage);
+  card.appendChild(link);
+  card.appendChild(cardDescription);
 
-function displayFooter() {
-  let footerElem = document.createElement("footer");
-  footerElem.setAttribute("class", "maze-tv-footer");
-  bodyEl.appendChild(footerElem);
-  footerElem.innerHTML = ` <p>
-        Source:
-        <a href="https://www.tvmaze.com"><em> TVMaze.com </em></a>
-      </p>`;
+  return card;
+}
+
+// lets create a function to empty the All cards
+function emptyCards(ul) {
+  ul.innerHTML = "";
+}
+
+function populateCards(array) {
+  let ul = document.getElementById("all-cards");
+  emptyCards(ul);
+  array.forEach((element) => {
+    let li = createCard(element);
+    ul.appendChild(li);
+  });
 }

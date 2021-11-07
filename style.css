@@ -1,6 +1,5 @@
 body {
-  background-color: rgb(7, 7, 7);
-  color: rgb(252, 252, 252);
+  background-color: lightgrey;
 }
 
 h1 {
@@ -14,71 +13,33 @@ h1 {
   margin-right: auto;
   margin-bottom: 30px;
 }
-#searchBar {
-  width: 25%;
-  border-radius: 5px;
-  height: 35px;
+#header {
+  background-color: lightblue;
+}
+#cardsWrapper {
+  background-color: burlywood;
+}
+#all-cards {
+  list-style: none;
 }
 
-.header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 20px;
+.single-card {
+  background-color: lavender;
 }
-#selection {
-  padding: 7px;
-  font-size: medium;
-  height: 40px;
-  border-radius: 5px;
-}
-
-.show-card {
-  font-size: 1.1rem;
-  padding: 0.2rem;
-  margin: 5px;
-  border: 1px dashed red;
-  background-color: rgb(19, 18, 18);
-  width: 250px;
-  border-radius: 5px;
-}
-.show-card:hover {
+.single-card:hover {
   cursor: pointer;
   transform: scale(1.03);
   transition: all 1s ease;
 }
-.All-cards {
-  background-color: rgb(54, 54, 54);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  border: 1px solid whitesmoke;
-  border-radius: 7px;
-}
-h3 {
-  border: 2px solid whitesmoke;
-  border-radius: 5px;
-  padding: 0.2rem;
-}
-.show-description {
-  word-spacing: 0.2rem;
-}
-
-/* maze tv link styles*/
-/*Footer*/
-footer {
-  margin: 5px;
-  text-align: center;
+.selectedCard {
+  border-color: yellow;
+  background-color: tomato;
 }
 a {
-  color: rgb(255, 255, 255);
   text-decoration: none;
-}
-a:hover {
-  color: black;
   font-weight: bold;
-  background-color: palegreen;
 }
+
 hr {
   width: 80%;
   margin-top: 30px;
