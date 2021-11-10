@@ -1,5 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+*,
+*::before,
+*::after {
+  font-family: "Open Sans", sans-serif;
+}
+
+html,
 body {
-  background-color: lightgrey;
+  min-height: 100%;
+  background: linear-gradient(#bdc3c7, #2c3e50);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 h1 {
@@ -12,22 +26,77 @@ h1 {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
+  margin-top: 1.5rem;
 }
 #header {
   background-color: lightblue;
 }
+#search {
+  min-width: 200px;
+}
 #cardsWrapper {
-  background-color: burlywood;
+  background-color: #efe1ce;
+  border-radius: 10px;
+  padding: 1.5rem;
 }
+/* #cardsWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+} */
 #all-cards {
+  --padding: 1.5rem;
   list-style: none;
+  padding-left: 0%;
+  padding: var(--padding);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
 }
-
+/* Card styling */
 .single-card {
-  background-color: lavender;
+  background-color: silver;
+
+  max-width: 400px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+
+  /* card shadow */
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.card-title {
+  margin-bottom: 0.6rem;
+  font-size: 1.5rem;
+}
+.card-picture {
+  border-radius: 0.5rem;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.card-detail {
+  margin-top: 1rem;
+}
+.pageLink {
+  /* our color variable we can access anywhere */
+  --color: hsl(200, 50%, 50%);
+  margin-top: 1.5rem;
+  background-color: var(--color);
+  color: white;
+  /* em is better for padding of small  buttons */
+  padding: 0.7em;
+  border-radius: 0.5rem;
+}
+.pageLink:hover,
+.pageLink:focus {
+  background-color: hsl(200, 50%, 60%);
+  transform: scale(1.03);
+  transition: all 1s ease;
 }
 .single-card:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
   transform: scale(1.03);
   transition: all 1s ease;
 }
@@ -40,7 +109,36 @@ a {
   font-weight: bold;
 }
 
-hr {
-  width: 80%;
-  margin-top: 30px;
+.maze-tv-footer {
+  /* background-color: black; */
+  position: relative;
+  height: 50px;
+  margin-top: -50px;
+  clear: both;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* text-align: center; */
+  align-items: center;
+  padding: 2.5rem;
+}
+
+.maze-tv-footer p {
+  /* our color variable we can access anywhere */
+  --color: hsl(200, 50%, 50%);
+  --margin: 2.5rem;
+  margin-top: var(--margin);
+
+  background-color: var(--color);
+  color: white;
+  /* em is better for padding of small  buttons */
+  padding: 0.7em;
+  border-radius: 0.5rem;
+  max-width: 200px;
+}
+.maze-tv-footer p:hover,
+.maze-tv-footer p:focus {
+  background-color: hsl(200, 50%, 60%);
+  transform: scale(1.03);
+  transition: all 1s ease;
 }

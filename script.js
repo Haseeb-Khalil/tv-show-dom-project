@@ -38,7 +38,7 @@ function showCount(search) {
   let countEl = document.getElementById("count");
   let totalEpisode = allEpisodes.length;
   let searchedEpisode = search.length;
-  countEl.innerText = `Showing ${searchedEpisode}/${totalEpisode} episodes`;
+  countEl.innerText = `Showing ${searchedEpisode}/ ${totalEpisode} Episodes.`;
   return countEl;
 }
 
@@ -69,9 +69,10 @@ function displayNameNumber(episode) {
 
 // Search Bar event Listener
 searchBar.addEventListener("input", (e) => {
+  e.preventDefault();
   //Getting value of searchInput
   let searchString = e.target.value.toLowerCase();
-  let searchResult = search(searchString, allShows); // our search result will be input text checked in all episodes
+  let searchResult = search(searchString, allEpisodes); // our search result will be input text checked in all episodes
   populateCards(searchResult);
   showCount(searchResult);
 });
@@ -80,10 +81,14 @@ searchBar.addEventListener("input", (e) => {
 // It takes two parameters inputText and Episodes we need to perform search on(in this case all episodes)
 function search(searchText, allEpisodes) {
   let filteredEpisodes = allEpisodes.filter((episode) => {
-    return (
-      episode.name.toLowerCase().includes(searchText) ||
-      episode.summary.toLowerCase().includes(searchText)
-    );
+    if (episode.summary != undefined) {
+      return (
+        episode.name.toLowerCase().includes(searchText) ||
+        episode.summary.toLowerCase().includes(searchText)
+      );
+    } else {
+      return episode.name.toLowerCase().includes(searchText);
+    }
   });
   return filteredEpisodes;
 }
@@ -116,11 +121,15 @@ showDropDown.addEventListener("change", (e) => {
     // Should display All shows
     populateCards(allShows);
     removeShowCount();
-    createAllEpisodesOptions([]);
-    // episodeDropDown.innerHTML = `<option value="selected">
-    //       <selected>Select a show to see episodes</selected>
-    //     </option>`;
-    searchBar.value = "";
+    createAllEpisodesOptions([
+      {
+        name: "Show selection required",
+        id: "Show selection required",
+      },
+    ]);
+
+    searchBar.disabled = true;
+    searchBar.placeholder = "Select a Show to Enable Search !";
   } else {
     // otherwise display shows using showId and live Data
     getEpisodes(showId).then((data) => {
@@ -129,6 +138,8 @@ showDropDown.addEventListener("change", (e) => {
       populateCards(allEpisodes);
       showCount(allEpisodes);
       createAllEpisodesOptions(allEpisodes);
+      searchBar.disabled = false;
+      searchBar.placeholder = "";
     });
   }
 });
@@ -157,9 +168,9 @@ episodeDropDown.addEventListener("change", (e) => {
   location.href = `#${value}`;
 
   let selectedEpisode = document.getElementById(value);
-  selectedEpisode.setAttribute("class", "selectedCard");
+  selectedEpisode.classList.add("selectedCard");
   setTimeout(() => {
-    selectedEpisode.removeAttribute("class", "selectedCard");
+    selectedEpisode.classList.remove("selectedCard");
   }, 3000);
 });
 
