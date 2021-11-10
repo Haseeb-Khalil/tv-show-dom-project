@@ -171,7 +171,7 @@ episodeDropDown.addEventListener("change", (e) => {
   selectedEpisode.classList.add("selectedCard");
   setTimeout(() => {
     selectedEpisode.classList.remove("selectedCard");
-  }, 3000);
+  }, 1200);
 });
 
 // Lets create One Card for a show/episode
