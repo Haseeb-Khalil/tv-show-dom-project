@@ -82,6 +82,7 @@ searchBar.addEventListener("input", (e) => {
 function search(searchText, allEpisodes) {
   let filteredEpisodes = allEpisodes.filter((episode) => {
     if (episode.summary != undefined) {
+      // Because some shows/episodes does not have a defined summary. So we used a condition for that.
       return (
         episode.name.toLowerCase().includes(searchText) ||
         episode.summary.toLowerCase().includes(searchText)
@@ -106,7 +107,7 @@ function createOneShowOption(show) {
 // Then we created option for each show as per above function "createOneShowOption(show)"
 function createAllShowsOptions(allShows) {
   showDropDown.appendChild(
-    createOneShowOption({ name: "All-Shows", id: "All-Shows" })
+    createOneShowOption({ name: "All-Shows", id: "All-Shows" }) // We are setting a default Id and name for this one option
   );
   allShows.forEach((show) => {
     let showOption = createOneShowOption(show);
@@ -128,7 +129,7 @@ showDropDown.addEventListener("change", (e) => {
       },
     ]);
 
-    searchBar.disabled = true;
+    searchBar.disabled = true; // Keeps searchBar disabled
     searchBar.placeholder = "Select a Show to Enable Search !";
   } else {
     // otherwise display shows using showId and live Data
@@ -138,7 +139,7 @@ showDropDown.addEventListener("change", (e) => {
       populateCards(allEpisodes);
       showCount(allEpisodes);
       createAllEpisodesOptions(allEpisodes);
-      searchBar.disabled = false;
+      searchBar.disabled = false; // Enables our search bar
       searchBar.placeholder = "";
     });
   }
@@ -165,7 +166,7 @@ function createAllEpisodesOptions(allEpisodes) {
 // Episode DropDown Event Listener
 episodeDropDown.addEventListener("change", (e) => {
   let value = e.target.value;
-  location.href = `#${value}`;
+  location.href = `#${value}`; // setting an ID to our value so we can locate it
 
   let selectedEpisode = document.getElementById(value);
   selectedEpisode.classList.add("selectedCard");
@@ -191,6 +192,7 @@ function createCard(element) {
 
   cardImage.setAttribute("class", "card-picture");
   cardImage.src = element.image ? element.image.medium : ""; // it will only show the image if a card has a medium sized image present
+  cardImage.alt = `${element.name} cover picture`;
 
   cardDescription.setAttribute("class", "card-detail");
   cardDescription.innerHTML = element.summary;
