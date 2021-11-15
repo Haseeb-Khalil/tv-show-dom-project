@@ -1,3 +1,187 @@
-#root {
-  color: red;
+/* Resetting our page styling */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Setting font style */
+*,
+*::before,
+*::after {
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Page background */
+html,
+body {
+  min-height: 100%;
+  background: linear-gradient(#bdc3c7, #2c3e50);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Main heading (h1)styling */
+h1 {
+  text-shadow: 3px 3px 5px black;
+  color: whitesmoke;
+  background-color: cadetblue;
+  border-radius: 5px;
+  width: 350px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  margin-top: 1.5rem;
+}
+
+/* All search fields i.e: shows-dropDown, episodes-dropDown & search bar and search count*/
+#header {
+  background-color: rgb(62, 75, 80);
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* justify-content: space-around; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin: 1rem;
+}
+
+#showSelection {
+  min-width: 200px;
+  border-radius: 0.5rem;
+  background-color: blanchedalmond;
+  font-size: 1.1rem;
+}
+#episodeSelection {
+  min-width: 200px;
+  border-radius: 0.5rem;
+  background-color: blanchedalmond;
+  font-size: 1.1rem;
+}
+#search {
+  min-width: 200px;
+  border-radius: 0.5rem;
+  background-color: blanchedalmond;
+  font-size: 1.1rem;
+}
+
+#count {
+  color: whitesmoke;
+}
+
+/* All Cards wrapper styling */
+#cardsWrapper {
+  background-color: black;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+/* Styles of all cards */
+#all-cards {
+  --padding: 1.5rem;
+  list-style: none;
+  padding-left: 0%;
+  padding: var(--padding);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+/* Card styling */
+.single-card {
+  background-color: silver;
+  max-width: 400px;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  /* card shadow */
+  box-shadow: 3px 5px 5px rgba(110, 209, 240, 0.7);
+}
+.card-title {
+  margin-bottom: 0.6rem;
+  font-size: 1.5rem;
+}
+.card-picture {
+  border-radius: 0.5rem;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.card-detail {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+.pageLink {
+  /* our color variable we can access anywhere */
+  --color: hsl(200, 50%, 50%);
+  margin-top: 1.5rem;
+  background-color: var(--color);
+  color: white;
+  /* em is better for padding of small  buttons */
+  padding: 0.7em;
+  border-radius: 0.5rem;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+}
+.pageLink:hover,
+.pageLink:focus {
+  background-color: hsl(200, 50%, 60%);
+  transform: scale(1.03);
+  transition: all 1s ease;
+}
+/* .single-card:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+  transition: all 1s ease;
+} */
+.selectedCard {
+  transform: scale(1.03);
+  transition: all 1s ease;
+  border-color: yellow;
+  background-color: lightcoral;
+}
+
+/* Styling of all anchor elements */
+a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Page footer styling */
+.maze-tv-footer {
+  position: relative;
+  height: 50px;
+  margin-top: -50px;
+  clear: both;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem;
+}
+
+/* Footer text or P */
+.maze-tv-footer p {
+  /* our color variable we can access anywhere */
+  --color: hsl(200, 50%, 50%);
+  --margin: 2.5rem;
+  margin-top: var(--margin);
+
+  background-color: var(--color);
+  color: white;
+  /* em is better for padding of small  buttons */
+  padding: 0.7em;
+  border-radius: 0.5rem;
+  max-width: 200px;
+}
+
+.maze-tv-footer p:hover,
+.maze-tv-footer p:focus {
+  background-color: hsl(200, 50%, 60%);
+  transform: scale(1.03);
+  transition: all 1s ease;
 }
