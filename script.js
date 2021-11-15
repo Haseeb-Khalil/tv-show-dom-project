@@ -94,6 +94,18 @@ function search(searchText, allEpisodes) {
   return filteredEpisodes;
 }
 
+// Keep searchBar Disable
+function disableSearchBar() {
+  searchBar.disabled = true; // Keeps searchBar disabled
+  searchBar.placeholder = "Select a Show to Enable Search !";
+}
+
+// Enable searchBar
+function enableSearchBar() {
+  searchBar.disabled = false; // Enables our search bar
+  searchBar.placeholder = "";
+}
+
 // Create a single Option for a show/
 function createOneShowOption(show) {
   let option = document.createElement("option");
@@ -128,9 +140,7 @@ showDropDown.addEventListener("change", (e) => {
         id: "Show selection required",
       },
     ]);
-
-    searchBar.disabled = true; // Keeps searchBar disabled
-    searchBar.placeholder = "Select a Show to Enable Search !";
+    disableSearchBar();
   } else {
     // otherwise display shows using showId and live Data
     getEpisodes(showId).then((data) => {
@@ -139,8 +149,7 @@ showDropDown.addEventListener("change", (e) => {
       populateCards(allEpisodes);
       showCount(allEpisodes);
       createAllEpisodesOptions(allEpisodes);
-      searchBar.disabled = false; // Enables our search bar
-      searchBar.placeholder = "";
+      enableSearchBar();
     });
   }
 });
